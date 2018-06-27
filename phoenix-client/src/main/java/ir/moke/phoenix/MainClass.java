@@ -1,5 +1,16 @@
 package ir.moke.phoenix;
 
+import ir.moke.phoenix.da.Operator;
+import ir.moke.phoenix.factory.PhoenixConnectionFactory;
+import ir.moke.phoenix.factory.PhoenixFactory;
+import oracle.kv.KVStore;
+import oracle.kv.Key;
+import oracle.kv.ValueVersion;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+
 public class MainClass {
 
     private static final String STORE_NAME = "phoenix";
@@ -7,12 +18,11 @@ public class MainClass {
 
     public static void main(String[] args) {
 
-        MainClass mainClass = new MainClass() ;
 
+        PhoenixFactory factory = PhoenixConnectionFactory.getConnection(STORE_NAME, URL_CONNECTION);
+        Operator operator = factory.getOperator();
 
-//        ConnectionFactory factory = OracleConnectionFactory.getConnection(STORE_NAME, URL_CONNECTION);
-//        Operator operator = factory.getOperator();
-//        operator.save("/mah454", "{\"name\":\"Ali\"}");
+//        operator.saveOrUpdate("/mah454", "{\"name\":\"Ali\"}");
 //        operator.saveOrUpdate("/mah454/-/book/1", "{\"name\":\"Ebn Sina\"}");
 //        operator.saveOrUpdate("/mah454/-/book/2", "{\"name\":\"Step Step to see god\"}");
 //        operator.saveOrUpdate("/mah454/-/persons/1", "{\"name\":\"Ali\"}");
@@ -27,12 +37,8 @@ public class MainClass {
 //        operator.delete("/mah454");
 //        operator.deleteRecursive("/mah454");
 
-//        SortedMap<Key,ValueVersion> sortedMap = operator.selectAll("/mah454/-/persons");
-//        Set<Map.Entry<Key,ValueVersion>> entries = sortedMap.entrySet();
-//        entries.forEach(e-> {
-//            System.out.println(e.getKey().getFullPath());
-//            System.out.println(new String(e.getValue().getValue().getValue()));
-//        });
+//        Map<String, String> map = operator.selectAll("/mah454");
+//        map.forEach((key, value) -> System.out.println(key + "->>" + value));
 
 
 //        SortedMap<Key,ValueVersion> sortedMap = operator.selectByRange("/mah454/-/persons","3","6");

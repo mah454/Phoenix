@@ -24,6 +24,16 @@ project(':phoenix-server') {
     }
 }
 
+project(':phoenix-api') {
+
+    apply plugin: 'war'
+
+    dependencies {
+        compileOnly group: 'javax', name: 'javaee-api', version: '7.0'
+        compile project(':phoenix-server')
+    }
+}
+
 project(':phoenix-client') {
     dependencies {
         compile project(':phoenix-server')

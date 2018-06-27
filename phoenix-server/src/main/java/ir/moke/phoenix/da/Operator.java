@@ -2,6 +2,8 @@ package ir.moke.phoenix.da;
 
 import oracle.kv.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedMap;
 
 public class Operator {
@@ -33,13 +35,16 @@ public class Operator {
         return store.get(key).getValue();
     }
 
-    public SortedMap<Key, ValueVersion> selectAll(String path) {
+    public Map<Key, Value> selectAll(String path) {
+        Map<Key, Value> map = new HashMap<>();
         Key key = Key.fromString(path);
-        return store.multiGet(key,null,null);
+        SortedMap<Key, ValueVersion> sortedMap = store.multiGet(key, null, null);
+        sortedMap.forEach((k, v) -> map.put(k, v.getValue()));
+        return map;
     }
 
-    public SortedMap<Key, ValueVersion> selectByRange(String path,String start,String end) {
+    public SortedMap<Key, ValueVersion> selectByRange(String path, String start, String end) {
         Key key = Key.fromString(path);
-        return store.multiGet(key,new KeyRange(start,true,end,true),null);
+        return store.multiGet(key, new KeyRange(start, true, end, true), null);
     }
 }

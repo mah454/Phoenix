@@ -1,4 +1,5 @@
 rootProject.name = 'Phoenix'
 
 include ':phoenix-server'
+include ':phoenix-api'
 include ':phoenix-client'

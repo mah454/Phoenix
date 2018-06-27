@@ -1,0 +1,31 @@
+subprojects {
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    group 'ir.moke.phoenix'
+    version '1.0-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+}
+
+project(':phoenix-server') {
+    dependencies {
+        compile group: 'com.oracle.kv', name: 'oracle-nosql-client', version: '18.3.0'
+    }
+}
+
+project(':phoenix-client') {
+    dependencies {
+        compile project(':phoenix-server')
+    }
+}

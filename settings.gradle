@@ -1,0 +1,4 @@
+rootProject.name = 'Phoenix'
+
+include ':phoenix-server'
+include ':phoenix-client'

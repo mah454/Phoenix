@@ -1,15 +1,5 @@
 package ir.moke.phoenix;
 
-import ir.moke.phoenix.da.Operator;
-import ir.moke.phoenix.factory.ConnectionFactory;
-import ir.moke.phoenix.factory.OracleConnectionFactory;
-import oracle.kv.Key;
-import oracle.kv.ValueVersion;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-
 public class MainClass {
 
     private static final String STORE_NAME = "phoenix";
@@ -19,9 +9,6 @@ public class MainClass {
 
         MainClass mainClass = new MainClass() ;
 
-
-        long val = Long.MAX_VALUE;
-        System.out.println(val + " => " + encode(val));
 
 //        ConnectionFactory factory = OracleConnectionFactory.getConnection(STORE_NAME, URL_CONNECTION);
 //        Operator operator = factory.getOperator();
@@ -56,32 +43,4 @@ public class MainClass {
 //        });
 
     }
-
-
-    private static final String range = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    public static long decode(String s) {
-        final int B = range.length();
-        long num = 0;
-        for (char ch : s.toCharArray()) {
-            num *= B;
-            num += range.indexOf(ch);
-        }
-        return num;
-    }//decode
-
-    public static String encode(long num) {
-        final int B = range.length();
-        System.out.println(B);
-        num = 10 ;
-        System.out.println(num % B);
-        System.out.println(range.charAt((int) (num % B)));
-        StringBuilder sb = new StringBuilder();
-        while (num != 0) {
-            sb.append(range.charAt((int) (num % B)));
-            num /= B;
-        }
-        return sb.reverse().toString();
-    }//encode
-
 }

@@ -1,6 +1,5 @@
 package ir.moke.phoenix.rs.api;
 
-import ir.moke.phoenix.da.Keya;
 import ir.moke.phoenix.da.Operator;
 
 import javax.inject.Inject;
@@ -24,9 +23,33 @@ public class SelectRequest {
 
     @Path("{clientId}")
     @POST
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response find(@PathParam("clientId") String cid, String key) {
+        if (key == null || key == "") {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        JsonObject object = operator.select(key);
+        return Response.ok(object).build();
+    }
+
+    @Path("{clientId}")
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response findAll(@PathParam("clientId") String cid, String key) {
+        if (key == null || key == "") {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        JsonObject object = operator.selectAll(key);
+        return Response.ok(object).build();
+    }
+
+    @Path("{clientId}")
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response save(@PathParam("clientId") String cid, String key) {
         if (key == null || key == "") {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

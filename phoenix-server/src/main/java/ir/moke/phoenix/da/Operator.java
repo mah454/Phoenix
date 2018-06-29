@@ -1,6 +1,7 @@
 package ir.moke.phoenix.da;
 
 import ir.moke.phoenix.factory.JsonBuilderFactory;
+import ir.moke.phoenix.utils.StoreUtils;
 import oracle.kv.*;
 
 import javax.json.Json;
@@ -12,7 +13,7 @@ import java.util.Iterator;
 
 public class Operator {
 
-    private static final JsonReader EMPTY_RESPONSE = Json.createReader(new StringReader("{}"));
+    private static final JsonReader EMPTY_CONTENT = Json.createReader(new StringReader("{}"));
     private JsonObjectBuilder builder;
 
     private KVStore store;
@@ -47,10 +48,11 @@ public class Operator {
             String result = new String(bytes);
             reader = Json.createReader(new StringReader(result));
         } catch (Exception e) {
-            reader = EMPTY_RESPONSE;
+            reader = EMPTY_CONTENT;
 
         }
-        return builder.add(path, reader.readObject()).build();
+        String minorPath = StoreUtils.utils.getMinorPath(key);
+        return builder.add(minorPath, reader.readObject()).build();
     }
 
     public JsonObject selectAll(String path) {
@@ -68,7 +70,7 @@ public class Operator {
     private JsonObject marshalObject(Iterator<KeyValueVersion> kvi) {
         while (kvi.hasNext()) {
             KeyValueVersion keyValueVersion = kvi.next();
-            String k = keyValueVersion.getKey().toString();
+            String k = StoreUtils.utils.getMinorPath(keyValueVersion.getKey());
             String v = new String(keyValueVersion.getValue().getValue());
             JsonReader jsonReader = Json.createReader(new StringReader(v));
             builder.add(k, jsonReader.readObject());

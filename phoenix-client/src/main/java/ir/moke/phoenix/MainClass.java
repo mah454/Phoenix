@@ -1,26 +1,46 @@
 package ir.moke.phoenix;
 
+import ir.moke.phoenix.da.Keya;
 import ir.moke.phoenix.da.Operator;
 import ir.moke.phoenix.factory.PhoenixConnectionFactory;
 import ir.moke.phoenix.factory.PhoenixFactory;
 import oracle.kv.KVStore;
 import oracle.kv.Key;
 import oracle.kv.ValueVersion;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
+import javax.json.spi.JsonProvider;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class MainClass {
 
     private static final String STORE_NAME = "phoenix";
     private static final String URL_CONNECTION = "localhost:5000";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        String key = "/sample" ;
 
-        PhoenixFactory factory = PhoenixConnectionFactory.getConnection(STORE_NAME, URL_CONNECTION);
-        Operator operator = factory.getOperator();
+        Keya a = new Keya() ;
+        a.setKey("/sample");
+        String response = WebClient.create("http://localhost:8080/api/v1/phoenix/aaaaa")
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(a)
+                .readEntity(String.class);
+        System.out.println(response);
+
+//        PhoenixFactory factory = PhoenixConnectionFactory.getConnection(STORE_NAME, URL_CONNECTION);
+//        Operator operator = factory.getOperator();
 
 //        operator.saveOrUpdate("/mah454", "{\"name\":\"Ali\"}");
 //        operator.saveOrUpdate("/mah454/-/book/1", "{\"name\":\"Ebn Sina\"}");

@@ -1,17 +1,13 @@
 package ir.moke.phoenix.rs.api;
 
+import ir.moke.phoenix.da.Keya;
 import ir.moke.phoenix.da.Operator;
-import oracle.kv.Key;
-import oracle.kv.Value;
-import oracle.kv.ValueVersion;
 
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
 /*
  *
@@ -21,7 +17,6 @@ import java.util.SortedMap;
  * */
 
 @Path("/phoenix")
-@Produces({"application/json","text/xml"})
 public class SelectRequest {
 
     @Inject
@@ -29,16 +24,13 @@ public class SelectRequest {
 
     @Path("{clientId}")
     @POST
-    public Response find(@PathParam("clientId") String cid, @QueryParam("key") String key) {
-        Value value = operator.select("/sample");
-        return Response.ok(value).build();
-    }
-
-
-    @Path("/sample")
-    @POST
-    public Response findTest() {
-        Map<Key,Value> map = operator.selectAll("/mah454/-/persons");
-        return Response.ok(map).build();
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+    public Response find(@PathParam("clientId") String cid, String key) {
+        if (key == null || key == "") {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        JsonObject object = operator.select(key);
+        return Response.ok(object).build();
     }
 }

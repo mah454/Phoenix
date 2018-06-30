@@ -1,25 +1,9 @@
 package ir.moke.phoenix;
 
-import ir.moke.phoenix.da.Keya;
-import ir.moke.phoenix.da.Operator;
-import ir.moke.phoenix.factory.PhoenixConnectionFactory;
-import ir.moke.phoenix.factory.PhoenixFactory;
-import oracle.kv.KVStore;
-import oracle.kv.Key;
-import oracle.kv.ValueVersion;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.json.spi.JsonProvider;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
 
 public class MainClass {
 
@@ -30,12 +14,16 @@ public class MainClass {
 
         String key = "/sample" ;
 
-        Keya a = new Keya() ;
-        a.setKey("/sample");
-        String response = WebClient.create("http://localhost:8080/api/v1/phoenix/aaaaa")
+        //language=JSON
+        String u = "{\"username\":\"admin\",\"password\":\"111111\"}";
+
+        User user = new User() ;
+        user.setUsername("admin");
+        user.setPassword("11");
+        String response = WebClient.create("http://localhost:8080/api/v1/users/login")
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .post(a)
+                .post(u)
                 .readEntity(String.class);
         System.out.println(response);
 
